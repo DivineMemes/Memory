@@ -132,7 +132,7 @@ int main()
 	pointerintarr(array, s);
 	
 	*/
-
+	
 	//3 Heap alloc array numbers
 	/*
 	int size = 0;
