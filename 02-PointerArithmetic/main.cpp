@@ -58,10 +58,29 @@ void arrReversal(int* arr, int size)
 {
 	for (int i = size; i > 0; i--)
 	{
-		cout << *(arr + (i - 1)) << endl;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+		cout << *(arr + (i - 1)) << endl;
 	}
 }
 
+void cstrReversal(char* arr, int size)
+{
+	//manually determine last valid character
+	int len = 0;
+	for (int i = 0; i < size; i++)
+	{
+		if (*(arr + i)=='\0')
+		{
+			break;
+		}
+		len++;
+	}
+	for (int i = 0; i < len / 2; i++)
+	{
+		int temp = *(arr + i);
+		*(arr + i) = *(arr + len - 1 - i);
+		*(arr + len - 1 - i) = temp;
+	}
+}
 
 	int main()
 	{
@@ -125,6 +144,14 @@ void arrReversal(int* arr, int size)
 		//arrCopy(arrayOne, 10, arrayTwo, 10);
 
 		arrReversal(arrayOne, 10);
+
+		char* name = new char[5];
+		name[0] = 'W';
+		name[1] = 'y';
+		name[2] = 'a';
+		name[3] = 't';
+		name[4] = 't';
+
 
 
 		while (true) {};

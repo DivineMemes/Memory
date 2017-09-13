@@ -7,6 +7,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01-HeapStack", "01-HeapStac
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "02-PointerArithmetic", "02-PointerArithmetic\02-PointerArithmetic.vcxproj", "{854DCB7C-C320-4FBE-9A48-1C2D8955116A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "03-References", "03-References\03-References.vcxproj", "{A3952525-9B07-4719-96C0-A08FC7F59EEB}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "04-Compilation", "04-Compilation\04-Compilation.vcxproj", "{98F61E37-2F74-4F3B-B8C3-18ED605C204B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +35,22 @@ Global
 		{854DCB7C-C320-4FBE-9A48-1C2D8955116A}.Release|x64.Build.0 = Release|x64
 		{854DCB7C-C320-4FBE-9A48-1C2D8955116A}.Release|x86.ActiveCfg = Release|Win32
 		{854DCB7C-C320-4FBE-9A48-1C2D8955116A}.Release|x86.Build.0 = Release|Win32
+		{A3952525-9B07-4719-96C0-A08FC7F59EEB}.Debug|x64.ActiveCfg = Debug|x64
+		{A3952525-9B07-4719-96C0-A08FC7F59EEB}.Debug|x64.Build.0 = Debug|x64
+		{A3952525-9B07-4719-96C0-A08FC7F59EEB}.Debug|x86.ActiveCfg = Debug|Win32
+		{A3952525-9B07-4719-96C0-A08FC7F59EEB}.Debug|x86.Build.0 = Debug|Win32
+		{A3952525-9B07-4719-96C0-A08FC7F59EEB}.Release|x64.ActiveCfg = Release|x64
+		{A3952525-9B07-4719-96C0-A08FC7F59EEB}.Release|x64.Build.0 = Release|x64
+		{A3952525-9B07-4719-96C0-A08FC7F59EEB}.Release|x86.ActiveCfg = Release|Win32
+		{A3952525-9B07-4719-96C0-A08FC7F59EEB}.Release|x86.Build.0 = Release|Win32
+		{98F61E37-2F74-4F3B-B8C3-18ED605C204B}.Debug|x64.ActiveCfg = Debug|x64
+		{98F61E37-2F74-4F3B-B8C3-18ED605C204B}.Debug|x64.Build.0 = Debug|x64
+		{98F61E37-2F74-4F3B-B8C3-18ED605C204B}.Debug|x86.ActiveCfg = Debug|Win32
+		{98F61E37-2F74-4F3B-B8C3-18ED605C204B}.Debug|x86.Build.0 = Debug|Win32
+		{98F61E37-2F74-4F3B-B8C3-18ED605C204B}.Release|x64.ActiveCfg = Release|x64
+		{98F61E37-2F74-4F3B-B8C3-18ED605C204B}.Release|x64.Build.0 = Release|x64
+		{98F61E37-2F74-4F3B-B8C3-18ED605C204B}.Release|x86.ActiveCfg = Release|Win32
+		{98F61E37-2F74-4F3B-B8C3-18ED605C204B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
