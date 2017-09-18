@@ -113,8 +113,12 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="monsters.txt" />
     <Text Include="text.txt" />
     <Text Include="Wyattsinfo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="entity.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
