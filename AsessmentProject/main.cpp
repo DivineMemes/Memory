@@ -3,15 +3,24 @@
 #include <iostream>
 #include <fstream>
 #include <cassert>
+#include <string>
+#include <ctime>
 
 using std::cout;
 using std::cin;
 using std::endl;
 using std::fstream;
+using std::string;
 
 HANDLE hStdin;
 DWORD fdwSaveOldMode;
-fstream file;
+fstream TimeFile;
+fstream ClickFile;
+string restart = "restart";
+string input;
+
+string timeI;
+
 
 int clicks = 0;
 int savedClicks = clicks;
@@ -19,32 +28,67 @@ VOID ErrorExit(LPSTR);
 VOID KeyEventProc(KEY_EVENT_RECORD);
 VOID MouseEventProc(MOUSE_EVENT_RECORD);
 VOID ResizeEventProc(WINDOW_BUFFER_SIZE_RECORD);
-
 int main(VOID)
 {
+
+	char buf[256];
+	time_t t = time(NULL);
+	struct tm timeInfo;
+
+	if (localtime_s(&timeInfo, &t) == 0)
+	{
+		strftime(buf, sizeof(buf), "%H:%M:%S", &timeInfo);
+	}
+
 	DWORD cNumRead, fdwMode, i;
 	INPUT_RECORD irInBuf[128];
 	int counter = 0;
 
 	// check to see if it exists
-
-	file.open("clicks", std::ios::out | std::ios::in);
-	if (file.fail())
+	//TimeFile.open("TimeRecording", std::ios::out | std::ios::in);
+	TimeFile.open("timeRec", std::ios::in | std::ios::out );
+	
+	if (TimeFile.fail())
 	{
-		// create the file if it does not
-		file.clear();
+		TimeFile.clear();
 
-		file.open("clicks", std::ios::out);	}
+		TimeFile.open("timeRec", std::ios::out);
+	}
+	else
+	{
+		string buffer;
+		string lastOpen;
+		while (std::getline(TimeFile, buffer))
+		{
+			lastOpen = buffer;
+			cout << lastOpen << endl;
+			cout << buf << endl;
+			cout << buf[0] - lastOpen[0] << endl;
+			cout << buf[1] - lastOpen[1] << endl;
+			cout << buf[3] - lastOpen[3] << endl;
+			cout << buf[4] - lastOpen[4] << endl;
+			cout << buf[6] - lastOpen[6] << endl;
+			cout << buf[7] - lastOpen[7] << endl;
+		}
+	}
+
+	ClickFile.open("clicks", std::ios::out | std::ios::in);
+	if (ClickFile.fail())
+	{
+		// create the file if it does not exist
+		ClickFile.clear();
+
+		ClickFile.open("clicks", std::ios::out);	}
 	else
 	{
 		// read the value if it does
-		file >> savedClicks;
+		ClickFile >> savedClicks;
 		clicks = savedClicks;
-		file.seekp(0);
+		ClickFile.seekp(0);
 	}
-	file.clear();
-	assert(!file.fail());
-
+	ClickFile.clear();
+	assert(!ClickFile.fail());
+	
 
 	
 
@@ -131,18 +175,41 @@ VOID ErrorExit(LPSTR lpszMessage)
 
 VOID KeyEventProc(KEY_EVENT_RECORD ker)
 {
+	char buf[256];
+	time_t t = time(NULL);
+	struct tm timeInfo;
+
+	if (localtime_s(&timeInfo, &t) == 0)
+	{
+		strftime(buf, sizeof(buf), "%H:%M:%S", &timeInfo);
+	}
 	if (ker.wVirtualKeyCode == VK_ESCAPE)
 	{
-		file.flush();
-		file.close();
+		ClickFile.flush();
+		ClickFile.close();
 		
+		TimeFile.clear();//clears end of file error
+		TimeFile.seekp(0);
+		TimeFile << buf;
+
+
+		TimeFile.flush();
+		TimeFile.close();
 		exit(0);
 	}
-	/*printf("Key event: ");
+	if (ker.wVirtualKeyCode == VK_SHIFT && ker.bKeyDown == false)
+	{
+		cout << "codes: 'restart', 'instant win' " << endl;
+		cin >> input;
+		if (input == restart)
+		{
+			cout << "That was a waste of time." << endl;
+			clicks = 0;
+			savedClicks = clicks;
+			ClickFile << savedClicks;
+		}
+	}
 	
-	if (ker.wVirtualKeyCode == VK_SPACE)
-		printf("key pressed\n");
-	else printf("key released\n");*/
 }
 
 VOID MouseEventProc(MOUSE_EVENT_RECORD mer)
@@ -150,7 +217,11 @@ VOID MouseEventProc(MOUSE_EVENT_RECORD mer)
 #ifndef MOUSE_HWHEELED
 #define MOUSE_HWHEELED 0x0008
 #endif
-	//printf("Mouse event: ");
+	// ... printing time ...
+
+	// grab time
+	// convert time into a string
+	
 
 	switch (mer.dwEventFlags)
 	{
@@ -158,38 +229,29 @@ VOID MouseEventProc(MOUSE_EVENT_RECORD mer)
 	case DOUBLE_CLICK:
 		if (mer.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED)
 		{
-			assert(!file.fail());
+			assert(!ClickFile.fail());
 			clicks++;
 			savedClicks = clicks;
-			file.seekp(0);
-			
-			
-
-			file << savedClicks;
-
+			ClickFile << savedClicks;
+			ClickFile.seekp(0);
 			cout << "You have clicked " << clicks << " times." << endl;
-			//printf("left button press \n");
 		}
 		else if (mer.dwButtonState == RIGHTMOST_BUTTON_PRESSED)
 		{
-			//printf("right button press \n");
+			
 		}
 		else
 		{
-			//printf("button press\n");
+			
 		}
 		break;
 	case MOUSE_HWHEELED:
-		//printf("horizontal mouse wheel\n");
 		break;
 	case MOUSE_MOVED:
-		//printf("mouse moved\n");
 		break;
-	case MOUSE_WHEELED:
-		//printf("vertical mouse wheel\n");
+	case MOUSE_WHEELED:		
 		break;
 	default:
-		//printf("unknown\n");
 		break;
 	}
 }
