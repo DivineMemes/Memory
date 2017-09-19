@@ -149,43 +149,45 @@ int main()
 	file.close();
 	*/
 
-fstream entityStream;
-entityStream.open("monsters.txt");
-if (entityStream.fail())
-{
-	cout << "Error" << endl;
-}
-int entityCount = 0;
-Entity entities[100];
-
-while (true)
-{
-	std::string buf;
-	bool entFound = false;
-	while (getline(entityStream, buf))
+	//load Entity data
+	/*
+	fstream entityStream;
+	entityStream.open("monsters.txt");
+	if (entityStream.fail())
 	{
-		if (buf[0] == '@') { break; }
-		entFound = true;
-		break;
+		cout << "Error" << endl;
 	}
-	if (!entFound) { break; }
-	Entity& curEntity = entities[entityCount];
-	getline(entityStream, buf);
-	curEntity.hitpoints = stof(buf);
-	getline(entityStream, buf);
-	curEntity.armor = stof(buf);
+	int entityCount = 0;
+	Entity entities[100];
 
-	getline(entityStream, buf);
-	curEntity.strength = stof(buf);
-	getline(entityStream, buf);
-	curEntity.defense = stof(buf);
-	getline(entityStream, buf);
-	curEntity.agility = stof(buf);
-	getline(entityStream, buf);
-	curEntity.luck = stof(buf);
-	entityCount++;
-	if (entityCount >= 100) { break; }
-}
+	while (true)
+	{
+		std::string buf;
+		bool entFound = false;
+		while (getline(entityStream, buf))
+		{
+			if (buf[0] == '@') { break; }
+			entFound = true;
+			break;
+		}
+		if (!entFound) { break; }
+		Entity& curEntity = entities[entityCount];
+		getline(entityStream, buf);
+		curEntity.hitpoints = stof(buf);
+		getline(entityStream, buf);
+		curEntity.armor = stof(buf);
 
+		getline(entityStream, buf);
+		curEntity.strength = stof(buf);
+		getline(entityStream, buf);
+		curEntity.defense = stof(buf);
+		getline(entityStream, buf);
+		curEntity.agility = stof(buf);
+		getline(entityStream, buf);
+		curEntity.luck = stof(buf);
+		entityCount++;
+		if (entityCount >= 100) { break; }
+	}
+	*/
 	while (true) {};
 }
