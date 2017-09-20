@@ -38,6 +38,7 @@ VOID MouseEventProc(MOUSE_EVENT_RECORD);
 VOID ResizeEventProc(WINDOW_BUFFER_SIZE_RECORD);
 int main(VOID)
 {
+	cout << "Welcome to Console Clicker, you must really hate yourself if you're playing this right now!" << endl;
 	srand(NULL);
 	char buf[256];
 	time_t t = time(NULL);
@@ -266,11 +267,14 @@ VOID KeyEventProc(KEY_EVENT_RECORD ker)
 		TimeFile.close();
 		exit(0);
 	}
-
+	if (true)
+	{
+		 
+	}
 
 	if (ker.wVirtualKeyCode == VK_SHIFT && ker.bKeyDown == false)
 	{
-		cout << "codes: 'restart', 'instant win', 'Juice' " << endl;
+		cout << "codes: 'restart', 'instant win', 'Juice',  " << endl;
 		cin >> input;
 		if (input == restart)
 		{
@@ -328,6 +332,29 @@ VOID MouseEventProc(MOUSE_EVENT_RECORD mer)
 			ClickFile << savedClicks;
 			ClickFile.seekp(0);
 			cout << "You have clicked " << clicks << " times." << endl;
+
+
+			if (clicks >= 100)
+			{
+				clicks++ * 2;
+			}
+			if (clicks >= 250)
+			{
+				clicks++ * 4;
+			}
+			if (clicks >= 500)
+			{
+				clicks++ * 8;
+			}
+			if (clicks >= 1000)
+			{
+				clicks++ * 10;
+			}
+			if (clicks >= 2000)
+			{
+				clicks++ * 50;
+			}
+
 		}
 		else if (mer.dwButtonState == RIGHTMOST_BUTTON_PRESSED)
 		{
