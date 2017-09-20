@@ -5,7 +5,8 @@
 #include <cassert>
 #include <string>
 #include <ctime>
-
+#include <thread>
+#include "Sound.h"
 using std::cout;
 using std::cin;
 using std::endl;
@@ -21,16 +22,23 @@ string input;
 
 string timeI;
 
+bool Juice = false;
 
 int clicks = 0;
 int savedClicks = clicks;
+
+
+void ColorPicker(int color)
+{
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
 VOID ErrorExit(LPSTR);
 VOID KeyEventProc(KEY_EVENT_RECORD);
 VOID MouseEventProc(MOUSE_EVENT_RECORD);
 VOID ResizeEventProc(WINDOW_BUFFER_SIZE_RECORD);
 int main(VOID)
 {
-
+	srand(NULL);
 	char buf[256];
 	time_t t = time(NULL);
 	struct tm timeInfo;
@@ -56,20 +64,68 @@ int main(VOID)
 	}
 	else
 	{
-		string buffer;
+		string buffer ;
 		string lastOpen;
+		string StoiString = "";//array that we convert and reduce back
+		int phour = 0;
+		int pmin = 0;
+		int psec = 0;
+		int chour = 0;
+		int cmin = 0;
+		int csec = 0;
+
 		while (std::getline(TimeFile, buffer))
 		{
 			lastOpen = buffer;
-			cout << lastOpen << endl;
-			cout << buf << endl;
-			cout << buf[0] - lastOpen[0] << endl;
-			cout << buf[1] - lastOpen[1] << endl;
-			cout << buf[3] - lastOpen[3] << endl;
-			cout << buf[4] - lastOpen[4] << endl;
-			cout << buf[6] - lastOpen[6] << endl;
-			cout << buf[7] - lastOpen[7] << endl;
+			//cout << lastOpen << endl;
+			//cout << buf << endl;
+			//HoldTime.push_back(buf[0]);
+
 		}
+
+
+		StoiString.push_back(buf[0]);
+		StoiString.push_back(buf[1]);
+		chour = std::stoi(StoiString);
+		StoiString.pop_back();
+		StoiString.pop_back();
+
+		StoiString.push_back(buf[3]);
+		StoiString.push_back(buf[4]);
+		cmin = std::stoi(StoiString);
+		StoiString.pop_back();//function that removes the affects of a push back
+		StoiString.pop_back();
+
+		StoiString.push_back(buf[6]);
+		StoiString.push_back(buf[7]);
+		csec = std::stoi(StoiString);
+		StoiString.pop_back();
+		StoiString.pop_back();
+
+
+		StoiString.push_back(lastOpen[0]);
+		StoiString.push_back(lastOpen[1]);
+		phour = std::stoi(StoiString);
+		StoiString.pop_back();
+		StoiString.pop_back();
+
+		StoiString.push_back(lastOpen[3]);
+		StoiString.push_back(lastOpen[4]);
+		pmin = std::stoi(StoiString);
+		StoiString.pop_back();//function that removes the affects of a push back
+		StoiString.pop_back();
+
+		StoiString.push_back(lastOpen[6]);
+		StoiString.push_back(lastOpen[7]);
+		psec = std::stoi(StoiString);
+		StoiString.pop_back();
+		StoiString.pop_back();
+
+		//buffer.push_back('x'); pushes x to the end of a string
+		
+		cout << "The last time you played was " << phour << ":" << pmin << ":" << psec << endl;
+		cout << "The current time it "<< chour << ":" << cmin << ":" << csec << endl;
+		
 	}
 
 	ClickFile.open("clicks", std::ios::out | std::ios::in);
@@ -87,7 +143,9 @@ int main(VOID)
 		ClickFile.seekp(0);
 	}
 	ClickFile.clear();
-	assert(!ClickFile.fail());
+	cout << "Press shift for cheats and fun" << endl;
+		cout << "You have " << clicks << " clicks stored up so far." << endl;
+	//assert(!ClickFile.fail());
 	
 
 	
@@ -162,6 +220,17 @@ int main(VOID)
 	return 0;
 }
 
+//int main()
+//{
+//	std::thread one(Fakemain);
+//	std::thread Tw0(Sound);
+//
+//	one.join();
+//	Tw0.join();
+//
+//}
+
+
 VOID ErrorExit(LPSTR lpszMessage)
 {
 	fprintf(stderr, "%s\n", lpszMessage);
@@ -197,16 +266,38 @@ VOID KeyEventProc(KEY_EVENT_RECORD ker)
 		TimeFile.close();
 		exit(0);
 	}
+
+
 	if (ker.wVirtualKeyCode == VK_SHIFT && ker.bKeyDown == false)
 	{
-		cout << "codes: 'restart', 'instant win' " << endl;
+		cout << "codes: 'restart', 'instant win', 'Juice' " << endl;
 		cin >> input;
 		if (input == restart)
 		{
 			cout << "That was a waste of time." << endl;
 			clicks = 0;
 			savedClicks = clicks;
+			
+			ClickFile.close();
+			ClickFile.open("clicks", std::ios::out);
+
+			ClickFile.seekp(0);
 			ClickFile << savedClicks;
+			ClickFile.flush();
+		}
+		else if (input == "Juice")
+		{
+			Juice = true;
+		}
+		else if (input == "InstantWin")
+		{
+			while (true)
+			{
+				int randColor = rand() % 5000 + 1;
+				ColorPicker(randColor);
+				clicks++;
+				cout << clicks << endl;
+			}
 		}
 	}
 	
@@ -229,7 +320,9 @@ VOID MouseEventProc(MOUSE_EVENT_RECORD mer)
 	case DOUBLE_CLICK:
 		if (mer.dwButtonState == FROM_LEFT_1ST_BUTTON_PRESSED)
 		{
-			assert(!ClickFile.fail());
+			int randColor = rand() % 5000 + 1;
+			//assert(!ClickFile.fail());
+			if (Juice == true) { ColorPicker(randColor);}
 			clicks++;
 			savedClicks = clicks;
 			ClickFile << savedClicks;
